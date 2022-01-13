@@ -13,17 +13,21 @@ def main():
     bottle_quant = [2*k for k in bottle_quant]
     num_individual = 3
 
+    # CONSTRAINTS
     x = {}
     for i in range(num_individual):
         for k in range(len(bottle_quant)):
             x[i,k] = model.NewBoolVar('x[{},{}]'.format(i,k))
     
+    # 7 bottles per individual
     for i in range(num_individual):
         model.Add(sum([x[i,k] for k in range(len(bottle_quant))]) == 7)
 
+    #  A bottle allocated at max to only one person
     for k in range(len(bottle_quant)):
         model.Add(sum([x[i,k] for i in range(num_individual)]) == 1)
 
+    # All individuals get same quantity
     quantity_1 = sum([bottle_quant[k] * x[0,k] for k in range(len(bottle_quant))])
     quantity_2 = sum([bottle_quant[k] * x[1,k] for k in range(len(bottle_quant))])
     quantity_3 = sum([bottle_quant[k] * x[2,k] for k in range(len(bottle_quant))])
