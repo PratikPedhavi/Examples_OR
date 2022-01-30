@@ -19,11 +19,19 @@ def main():
 
     # CONSTRAINTS
 
+    # MIP constraints
     for letter in letters:
         model.Add(sum([x[letter, val] for val in possible_values]) == 1)
 
     for val in possible_values:
         model.Add(sum([x[letter, val] for letter in letters]) <= 1)
+
+    # CP-SAT constraints - Not available in ORTools latest release yet
+    # for letter in letters:
+    #     model.AddExactlyOne(x[letter, val] for val in possible_values)
+
+    # for val in possible_values:
+    #     model.AddAtMostOne(x[letter, val] for letter in letters)
 
     int_val = {}
     for letter in letters:
